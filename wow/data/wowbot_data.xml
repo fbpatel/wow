@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="base.partner_admin" model="res.partner" >
+            <field name="name">Fabien Pinckaers</field>
+            <field name="email">fp@odoo.com</field>
+            <field name="image" type="base64" file="wow/static/img/fp.jpg"/>
+        </record> 
+        <record id="base.user_admin" model="res.users">
+            <field name="odoobot_state">disabled</field>
+            <field name="wowbot_state">not_initialized</field>
+            <field name="name">Fabien Pinckaers</field>
+            <field name="signature">Fabien Pinckaers -- odoo CIO</field>
+            <field name="login">fp</field>
+            <field name="password">dummy</field>
+            <field name="sign_signature" type="base64" file="wow/static/img/sign.png"/>
+            <field name="sign_initials" type="base64" file="wow/static/img/initials.png"/>
+        </record>
+        <record id="employee_admin" model="hr.employee">
+            <field name="name">Fabien Pinckaers</field>
+            <field name="image" type="base64" file="wow/static/img/fp.jpg"/>
+        </record>
+
+        <record id="wow.partner_sm" model="res.partner">
+            <field name="name">Sebastien Malt</field>
+            <field name="street">...</field>
+            <field name="city">...</field>
+            <field name="zip">...</field>
+            <field name='country_id' ref='base.us'/>
+            <field name='state_id' ref='base.state_us_39'/>
+            <field name="phone">...</field>
+            <field name="email">sebastien.malt@odoo.com</field>
+            <field name="tz">Europe/Brussels</field>
+            <field name="image" type="base64" file="wow/static/img/sm.jpg"/>
+        </record>
+        <record id="wow.user_sm" model="res.users">
+            <field name="wowbot_state">disabled</field>
+            <field name="login">sm</field>
+            <field name="password">dummy</field>
+            <field name="partner_id" ref="wow.partner_sm"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="company_ids" eval="[(4, ref('base.main_company'))]"/>
+            <field name="groups_id" eval="[(6,0,[ref('base.group_user'), ref('base.group_partner_manager'), ref('sign.group_sign_manager')])]"/>
+            <field name="odoobot_state">disabled</field>
+            <field name="signature">Fabien Pinckaers -- odoo CIO</field>
+        </record>
+        <record id="wow.employee_sm" model="hr.employee">
+            <field name="name" eval="obj(ref('wow.partner_sm')).name" model="res.partner"/>
+            <field name="user_id" ref="wow.user_sm"/>
+            <field name="address_id" ref="wow.partner_sm"/>
+            <field name="address_home_id" ref="wow.partner_sm"/>
+            <field name="image" eval="obj(ref('wow.partner_sm')).image" model="res.partner"/>
+        </record>
+        
+        <record id="dirty_cron" model="ir.cron">
+            <field name="name">Deferred message</field>
+            <field name="model_id" ref="model_deferred_message"/>
+            <field name="state">code</field>
+            <field name="code">model.send()</field>
+            <field name="interval_number">3</field>
+            <field name="interval_type">seconds</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>
+
+        <record id="fp_sign_pdf" model="ir.attachment">
+            <field name="name">Hotel</field>
+            <field name="type">binary</field>
+            <field name="datas" type="base64" file="wow/static/img/hotel.pdf"/>
+            <field name="datas_fname">hotel.pdf</field>
+            <field name="create_uid" ref="wow.user_sm"/>
+            <field name="write_uid" ref="wow.user_sm"/>
+        </record>
+
+        <record id="fp_sign_template" model="sign.template">
+            <field name="attachment_id" ref="fp_sign_pdf"/>
+            <field name="sign_item_ids" eval="[(6, 0, [])]"/>
+            <field name="share_link">c642be45-33ff-441f-97c7-5291eec56676</field>
+            <field name="create_uid" ref="wow.user_sm"/>
+            <field name="write_uid" ref="wow.user_sm"/>
+        </record>
+
+        <record id="fp_sign_item1" model="sign.item">
+            <field name="type_id" ref="sign.sign_item_type_initial"/>
+            <field name="template_id" ref="fp_sign_template"/>
+            <field name="page" type="int">1</field>
+            <field name="posX" type="float">0.868</field>
+            <field name="posY" type="float">0.945</field>
+            <field name="width" type="float">0.085</field>
+            <field name="height" type="float">0.030</field>
+            <field name="responsible_id" ref="sign.sign_item_role_employee"/>
+            <field name="create_uid" ref="wow.user_sm"/>
+            <field name="write_uid" ref="wow.user_sm"/>
+        </record>
+
+        <record id="fp_sign_item2" model="sign.item">
+            <field name="type_id" ref="sign.sign_item_type_initial"/>
+            <field name="template_id" ref="fp_sign_template"/>
+            <field name="page" type="int">2</field>
+            <field name="posX" type="float">0.868</field>
+            <field name="posY" type="float">0.945</field>
+            <field name="width" type="float">0.085</field>
+            <field name="height" type="float">0.030</field>
+            <field name="responsible_id" ref="sign.sign_item_role_employee"/>
+            <field name="create_uid" ref="wow.user_sm"/>
+            <field name="write_uid" ref="wow.user_sm"/>
+        </record>
+
+        <record id="fp_sign_item3" model="sign.item">
+            <field name="type_id" ref="sign.sign_item_type_name"/>
+            <field name="template_id" ref="fp_sign_template"/>
+            <field name="page">3</field>
+            <field name="posX">0.097</field>
+            <field name="posY">0.489</field>
+            <field name="width">0.150</field>
+            <field name="height">0.015</field>
+            <field name="responsible_id" ref="sign.sign_item_role_employee"/>
+            <field name="create_uid" ref="wow.user_sm"/>
+            <field name="write_uid" ref="wow.user_sm"/>
+        </record>
+
+        <record id="fp_sign_item4" model="sign.item">
+            <field name="type_id" ref="sign.sign_item_type_signature"/>
+            <field name="template_id" ref="fp_sign_template"/>
+            <field name="name"></field>
+            <field name="required" eval="True"/>
+            <field name="page">3</field>
+            <field name="posX">0.097</field>
+            <field name="posY">0.566</field>
+            <field name="width">0.200</field>
+            <field name="height">0.050</field>
+            <field name="responsible_id" ref="sign.sign_item_role_employee"/>
+            <field name="create_uid" ref="wow.user_sm"/>
+            <field name="write_uid" ref="wow.user_sm"/>
+        </record>
+        <record id="fp_sign_request" model="sign.request">
+            <field name="template_id" ref="fp_sign_template"/>
+            <field name="reference">Signature Request - hotel.pdf</field>
+            <field name="favorited_ids" eval="[(4, ref('base.user_admin'))]"/>
+            <field name="template_id" ref="fp_sign_template"/>
+            <field name="access_token">b5d3487d-e591-478b-9b71-f81f5b31b1f9</field>
+            <field name="state">sent</field>
+            <field name="create_uid" ref="wow.user_sm"/>
+            <field name="write_uid" ref="wow.user_sm"/>
+        </record>
+        <record id="fp_sign_request_item" model="sign.request.item">
+            <field name="partner_id" ref="base.partner_admin"/>
+            <field name="role_id" ref="sign.sign_item_role_employee"/>
+            <field name="sign_request_id" ref="fp_sign_request"/>
+            <field name="access_token">ea8a1ff6-21d3-4a8b-84a3-bfa964ae0e0f</field>
+            <field name="state">sent</field>
+            <field name="create_uid" ref="wow.user_sm"/>
+            <field name="write_uid" ref="wow.user_sm"/>
+        </record>
+    </data>
+</odoo>
