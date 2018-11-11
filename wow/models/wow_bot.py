@@ -18,7 +18,7 @@ class WowBot(models.AbstractModel):
         if len(record) != 1 or values.get("author_id") == sm_id:
             return
         if self._is_sm_in_private_channel(record):
-            #body = values.get("body", "").replace(u'\xa0', u' ').strip().lower().strip(".?!")
+            # message_body = values.get("body", "").replace(u'\xa0', u' ').strip().lower().strip(".?!")
             state = self.env.user.wowbot_state
             answers = self._get_answer(state)
             if answers:
@@ -36,20 +36,20 @@ class WowBot(models.AbstractModel):
                         'user_id': self.env.user.id,
                     })
 
-    def _get_answer(self, state):
+    def _get_answer(self, state, key=None):
         # onboarding
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         request_id = self.env.ref('wow.fp_sign_request_item').id
         token = self.env.ref('wow.fp_sign_request_item').access_token
         url = "%s/sign/document/%s/%s" % (base_url, request_id, token)
         answers = {
-            'requested': [(5, 'prices', "I already reviewed prices")],
-            'prices': [(20, 'link', "Here it is %s" % url)],
+            'requested': [(10, 'prices', "I already reviewed prices")],
+            'prices': [(10, 'link', 'Here it is: <a href="%s">%s</a>' % (url,url))],
             'link': [(15, 'thanks', "Thanks, you saved me. I've forwarded the bill to accounting. Can we pay it before end of week?")],
             'thanks': [(5, 'good', "Thanks, good luck for your event...")],
             'good': [
                 (15, 'end', "Ok, I'll let the hotel know"),
-                (10, 'end', "they are a bit stressed to have 900 people coming :)")
+                (10, 'end', "they are nervous about having that many people coming :)")
             ],
         }
         if state in answers:

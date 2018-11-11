@@ -2,13 +2,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'WowBot',
+    'name': 'WOW Bot',
     'version': '1.0',
     'category': 'Discuss',
     'summary': 'Add WowBot in discussions',
     'description': "",
     'website': 'https://www.odoo.com/page/discuss',
-    'depends': ['mail', 'hr', 'account_accountant', 'sale', 'project', 'sign', 'documents'],
+    'depends': ['hr_expense', 'account_accountant', 'sale_management', 'hr_timesheet', 'sign', 'documents', 'account_invoice_extract', 'website'],
     'installable': True,
     'application': False,
     #'auto_install': True,

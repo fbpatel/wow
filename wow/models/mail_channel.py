@@ -37,15 +37,15 @@ class Channel(models.Model):
                 'user_id': self.env.user.id,
             })
             Deferred.create({
-                'body': "Are you available?",
-                'time': now + relativedelta(seconds=10),
+                'body': "Are you available? It's urgent.",
+                'time': now + relativedelta(seconds=15),
                 'channel_id': channel.id,
                 'state': 'writing',
                 'user_id': self.env.user.id,
             })
             Deferred.create({
                 'body': "The hotel needs your signature for 300 extra attendees before we start. Can you sign it now, we start in an hour?",
-                'time': now + relativedelta(seconds=30),
+                'time': now + relativedelta(seconds=40),
                 'channel_id': channel.id,
                 'state': 'requested',
                 'user_id': self.env.user.id,
