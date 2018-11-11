@@ -50,4 +50,4 @@ class Channel(models.Model):
                 'state': 'requested',
                 'user_id': self.env.user.id,
             })
-            return channel
+        return True

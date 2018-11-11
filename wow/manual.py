@@ -1,8 +1,16 @@
-import odoorpc
-from pprint import pprint
+#!/usr/bin/python
 
-odoo = odoorpc.ODOO('127.0.0.1', port=8069)
-print(odoo.db.list()[0])
+import xmlrpclib
+import csv
 
-odoo.login(odoo.db.list()[0], 'admin', 'admin')
-data = odoo.execute('mail.channel', 'init_wow')
+db       = 'trunk'
+url      = 'localhost:8069'
+username = 'admin'
+password = 'admin'
+
+common = xmlrpclib.ServerProxy('http://'+url+'/xmlrpc/2/common'.format(url))
+uid = common.authenticate(db, username, password, {})
+
+models = xmlrpclib.ServerProxy('http://'+url+'/xmlrpc/2/object'.format(url))
+models.execute_kw(db, uid, password, 'mail.channel', 'init_wow', [])
+

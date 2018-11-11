@@ -153,5 +153,11 @@
             <field name="create_uid" ref="wow.user_sm"/>
             <field name="write_uid" ref="wow.user_sm"/>
         </record>
+
+        <function model="account.account" name="write">
+            <value model="account.account" search="[('name', 'like', 'Fixed Asset Account')]"/>
+            <value eval="{'code': '612023', 'name': 'Exhibition Costs'}"/>
+        </function>
+
     </data>
 </odoo>
