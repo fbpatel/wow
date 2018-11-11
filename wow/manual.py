@@ -2,6 +2,10 @@
 
 import xmlrpclib
 import csv
+import os
+import time
+
+time.sleep(7)
 
 db       = 'trunk'
 url      = 'localhost:8069'

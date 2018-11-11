@@ -34,6 +34,7 @@ class Channel(models.Model):
                 'time': now,
                 'channel_id': channel.id,
                 'state': 'writing',
+                'sound': True,
                 'user_id': self.env.user.id,
             })
             Deferred.create({
@@ -41,11 +42,13 @@ class Channel(models.Model):
                 'time': now + relativedelta(seconds=15),
                 'channel_id': channel.id,
                 'state': 'writing',
+                'sound': True,
                 'user_id': self.env.user.id,
             })
             Deferred.create({
                 'body': "The hotel needs your signature for 300 extra attendees before we start. Can you sign it now, we start in an hour?",
                 'time': now + relativedelta(seconds=40),
+                'sound': True,
                 'channel_id': channel.id,
                 'state': 'requested',
                 'user_id': self.env.user.id,

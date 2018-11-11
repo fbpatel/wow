@@ -3,6 +3,7 @@
 
 from odoo import api, models, fields
 from odoo.service import server
+import os, sys
 
 class Channel(models.Model):
     _name = 'deferred.message'
@@ -12,6 +13,7 @@ class Channel(models.Model):
     channel_id = fields.Many2one('mail.channel', string='Channel', ondelete='cascade', required=True)
     state = fields.Char(string='State', required=True)
     user_id = fields.Many2one('res.users', string='User', required=True)
+    sound = fields.Boolean('With Sound')
 
     @api.model
     def send(self):
@@ -20,6 +22,10 @@ class Channel(models.Model):
         sm_id = self.env['ir.model.data'].xmlid_to_res_id("wow.partner_sm")
         sm_user = self.env.ref("wow.user_sm")
         for deferred in deferreds:
+            if deferred.sound:
+                if os.fork():
+                    os.system('play -q /usr/share/sounds/ubuntu/notifications/Mallet.ogg & notify-send --icon=face-smile --urgency=critical Sebastien "%s"' % (deferred.body,))
+                    sys.exit(0)
             channel = deferred.channel_id
             message = deferred.body
             channel.sudo(sm_user).with_context({"mail_create_nosubscribe": True}).message_post(body=message, author_id=sm_id, message_type="comment", subtype="mail.mt_comment")
