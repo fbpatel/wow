@@ -159,5 +159,8 @@
             <value eval="{'code': '612023', 'name': 'Exhibition Costs'}"/>
         </function>
 
+        <function model="wow.bot" name="init_wow_for_fp"/>
+
+
     </data>
 </odoo>
